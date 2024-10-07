@@ -4,13 +4,14 @@ namespace ExifStripper;
 
 internal static class Program
 {
+    private static readonly IReadOnlyList<string> Extensions = [".jpg", ".png"];
+    
     internal static void Main(string[] args)
     {
         var files = Directory.GetFiles(args[0]);
         var targetPath = Path.Join(args[0], "Stripped");
         Directory.CreateDirectory(targetPath);
-        foreach (var file in files.Where(f => 
-                     string.Compare(Path.GetExtension(f), ".jpg", StringComparison.OrdinalIgnoreCase) == 0))
+        foreach (var file in files.Where(f => Extensions.Contains(Path.GetExtension(f).ToLower())))
         {
             var img = ImageFile.FromFile(file);
             for (var i = 0; i < img.Properties.Count; i++)
