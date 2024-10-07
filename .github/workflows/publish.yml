@@ -1,0 +1,33 @@
+name: Publish ExifStripper
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet publish --no-restore
+      - name: Compress Publish
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ExifStripper.zip ./ExifStripper/bin/Release/net8.0/publish
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{  github.ref_name }}
+          body: Automated build by Github Actions
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          files: ExifStripper.zip
