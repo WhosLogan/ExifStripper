@@ -4,7 +4,7 @@ namespace ExifStripper;
 
 internal static class Program
 {
-    private static readonly IReadOnlyList<string> Extensions = [".jpg", ".png", ".jpeg"];
+    private static readonly IReadOnlyList<string> Extensions = [".jpg", ".png", ".jpeg", ".gif"];
     
     internal static void Main(string[] args)
     {
